@@ -1,0 +1,31 @@
+{
+  "name": "node_practicas",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@hapi/boom": "^10.0.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "joi": "^17.11.0",
+    "jose": "^5.2.0",
+    "morgan": "^1.10.0",
+    "mysql2": "^3.6.5",
+    "nodemon": "^3.0.2",
+    "passport": "^0.7.0",
+    "passport-http-bearer": "^1.0.1",
+    "standard": "^17.1.0",
+    "typescript": "^5.3.3"
+  },
+  "eslintConfig": {
+    "extends": "standard"
+  }
+}
