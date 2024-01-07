@@ -24,7 +24,7 @@ db.connect((err, req, res) => {
   }
 })
 
-export function QueryAsync (sql, options) {
+export function queryAsync (sql, options) {
   return new Promise(
     (resolve, reject) => {
       db.query(sql, options, (err, result) => {
