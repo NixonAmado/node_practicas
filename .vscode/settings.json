@@ -2,6 +2,7 @@
     "conventionalCommits.scopes": [
         "Controller",
         "Helpers",
-        "Middlewares"
+        "Middlewares",
+        "index"
     ]
 }

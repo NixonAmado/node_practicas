@@ -1,17 +1,12 @@
 import { queryAsync } from './connection.controller.js'
-import { Boom } from '@hapi/boom'
-const createUser = async (content, req, res, next) => {
+import boom from '@hapi/boom'
+const createUser = async (content, res, next) => {
   try {
     const result = await queryAsync(
-      'INSERT INTO user(name, password, isAuth) VALUES (?,?,?)',
-      [content.name, content.password, content.isAuth]
+      'INSERT INTO user2(username, password, birthdate, email) VALUES (?,?,?,?)',
+      [content.username, content.password, content.birthdate || null, content.email]
     )
-    console.log(result.affectedRows)
-    if (result.affectedRows) {
-      return true
-    } else {
-      return false
-    }
+    return result
   } catch (error) {
     next(error)
   }
@@ -74,11 +69,9 @@ export async function getUser (req, res, next) {
 
 export async function postUser (req, res, next) {
   try {
-    const response = await createUser(req.body)
-    if (response) {
+    const content = await createUser(req.body, res, next)
+    if (content.affectedRows) {
       res.status(200).json({ response: 'Se ha creado con exito' })
-    } else {
-      next(Boom.badRequest('Error al registrar'))
     }
   } catch (error) {
     next(error)
