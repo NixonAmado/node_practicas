@@ -77,7 +77,8 @@ web_modules/
 .yarn-integrity
 
 # dotenv environment variable files
-
+# it had been ignored for external test, but now, it return to be private
+.env 
 .env.development.local
 .env.test.local
 .env.production.local
