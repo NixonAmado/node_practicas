@@ -8,19 +8,21 @@ const app = express()
 // config
 dotenv.config()
 app.set('port', process.env.PORT || 8080)
-// Middlewares
-app.use(morgan('dev'))
 app.use(express.json())
-app.use(cors({ origin: '*' }))
-app.use(logErrors)
-app.use(boomErrorHandler)
 
-app.use(errorHandler)
 // Routes
 app.get('/', (req, res) => {
   res.send('hola mundo')
 })
 app.use('/user', user)
+// Middlewares
+app.use(morgan('dev'))
+app.use(cors({ origin: '*' }))
+
+app.use(logErrors)
+app.use(boomErrorHandler)
+app.use(errorHandler)
+
 // Listen
 app.listen(app.get('port'), () => {
   console.log('my local host = http://localhost:' + app.get('port'))
