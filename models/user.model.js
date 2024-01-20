@@ -9,7 +9,6 @@ const birthdate = Joi.date()
 
 const email = Joi.string().email().max(60)
 const password = Joi.string()
-  .required()
   .min(7)
   .max(255)
   .regex(/(?=.*[A-Z])(?=.*[0-9])/)
