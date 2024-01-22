@@ -3,8 +3,8 @@ import boom from '@hapi/boom'
 const createUser = async (content, res, next) => {
   try {
     const result = await queryAsync(
-      'INSERT INTO user2(username, password, birthdate, email) VALUES (?,?,?,?)',
-      [content.username, content.password, content.birthdate || null, content.email]
+      `INSERT INTO User(${content.attributes}) VALUES (${content.length})`,
+      content.values
     )
     return result
   } catch (error) {
@@ -12,10 +12,10 @@ const createUser = async (content, res, next) => {
   }
 }
 
-const readUser = async (content, req, res, next) => {
+const readUser = async (req, res, next) => {
   try {
     const result = await queryAsync(
-      'SELECT * FROM user'
+      'SELECT * FROM User'
     )
     if (result.length !== 0) {
       return result
@@ -56,11 +56,16 @@ const deleteUser = async (id, req, res, next) => {
 
 export async function getUser (req, res, next) {
   try {
-    const users = await readUser()
+    const content = {
+      attributes: 'username,password,birthdate,email',
+      values: [req.body.username, req.body.password, req.body.birthdate || null, req.body.email]
+    }
+    content.length = content.values.length
+    const users = await readUser(content, res, next)
     if (users) {
       res.status(200).json({ users })
     } else {
-      next(Boom.noContent('No hay  usuarios registrados en la base de datos'))
+      next(boom.noContent('No hay  usuarios registrados en la base de datos'))
     }
   } catch (error) {
     next(error)
