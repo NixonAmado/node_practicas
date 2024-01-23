@@ -4,8 +4,8 @@ const name = Joi.string().alphanum().min(3).max(50)
 const id = Joi.number().integer().positive()
 const birthdate = Joi.date()
   .format('iso')
-  .min(new Date().getFullYear() - 18 + '-01-01') // minimo
-  .max((new Date().getFullYear() - 99) + '-01-01') // maximo
+  .min(new Date().getFullYear() - 99 + '-01-01') // minimo
+  .max((new Date().getFullYear() - 18) + '-01-01') // maximo
 
 const email = Joi.string().email().max(60)
 const password = Joi.string()
