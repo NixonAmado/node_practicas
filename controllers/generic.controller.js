@@ -1,5 +1,4 @@
 import { queryAsync } from './connection.controller.js'
-import boom from '@hapi/boom'
 export const createUser = async (content, res, next) => {
   try {
     const result = await queryAsync(
