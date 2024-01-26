@@ -3,7 +3,7 @@ import dotenv from 'dotenv'
 import passport from 'passport'
 import { SignJWT, jwtVerify } from 'jose'
 import { Strategy as BearerStrategy } from 'passport-http-bearer'
-
+import boom from '@hapi/boom'
 // llamar variables de entorno
 dotenv.config('../')
 console.log(process.env.JWT_KEY)
@@ -29,11 +29,11 @@ export function requireRole (role) {
     passport.authenticate(
       'BEARER', { session: false }, (err, user) => {
         if (err) {
-          return res.status(401).json({ status: 401, message: 'Unauthorized' })
+          return next(err)
         } if (!user) {
-          return res.status(401).json({ status: 401, message: 'Unauthorized' })
+          return boom.unauthorized('Empty user')
         } if (user.role !== role) {
-          return res.status(403).json({ status: 403, message: 'Forbiden' })
+          return boom.forbidden(' Invalid user role')
         }
         req.user = user
         next()
@@ -53,15 +53,15 @@ export async function validateToken (req, res, next) {
       req.user = payload
       return next()
     } else {
-      res.status(404).json({ status: 404, message: 'Not Found' })
+      next(boom.notFound('Not found'))
     }
   } catch (err) {
     console.error(err)
-    return res.status(400).json({ status: 401, message: 'Unauthorized' })
+    next(boom.unauthorized('invalid token'))
   }
 }
 
-export async function createToken (req, res) {
+export async function createToken (req, res, next) {
   const encoder = new TextEncoder()
   if (req.body.role === 'admin' || req.body.role === 'student') {
     const jwtConstructor = await new SignJWT(req.body)
@@ -71,6 +71,6 @@ export async function createToken (req, res) {
       .sign(encoder.encode(process.env.JWT_KEY))
     res.status(200).json({ status: 200, token: jwtConstructor })
   } else {
-    res.status(400).json({ status: 400, message: 'Invalid Credentials required' })
+    next(boom.badRequest('Invalid Credentials required'))
   }
 }
